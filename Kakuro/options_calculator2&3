@@ -2,15 +2,11 @@
 
 #arraytotal = int(input('Total value of the array '))
 #arrayunits = int(input('Number of numbers within the array '))
-arraytotal = 17
-arrayunits = 2
+arraytotal = 13
+arrayunits = 3
+print('Hello')
 
 firstnumber = list(range(1,10))
-print(firstnumber)
-secondnumber = list(range(1,10))
-secondnumber.remove(5)
-print(secondnumber)
-#wait = input('Type something ')
 if arrayunits == 2:
     for a1 in firstnumber:
         secondnumber = list(range(a1,10))
