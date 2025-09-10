@@ -1,0 +1,30 @@
+#Simple code to calculate possible options for a 2 or 3 length array in Kakuro
+
+#arraytotal = int(input('Total value of the array '))
+#arrayunits = int(input('Number of numbers within the array '))
+arraytotal = 12
+arrayunits = 3
+
+#wait = input('Type something ')
+if arrayunits == 2:
+    for a1 in range(1,10):
+        for a2 in range(1,10):
+            potential =([a1,a2])
+            if sum(potential) == arraytotal:
+                print(potential)
+        #solutions = [arraytotal]
+if arrayunits == 3:
+    for a1 in range(1,10):
+        for a2 in range(1,10):
+            for a3 in range (1,10):
+                potential =([a1,a2,a3])
+                if sum(potential) == arraytotal:
+                    print(potential)
+        #solutions = [arraytotal]
+else:
+    solutions = 'Not a 2 length array'
+#print(solutions)
+
+#Improvements
+# 1 need to remove duplicates e.g. 6,9 and 9,6
+# 2 reduce a2 array to avoid duplicate a1 digit
