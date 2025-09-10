@@ -3,23 +3,22 @@
 #arraytotal = int(input('Total value of the array '))
 #arrayunits = int(input('Number of numbers within the array '))
 arraytotal = 12
-arrayunits = 3
+arrayunits = 2
 
+firstnumber = list(range(1,10))
+print(firstnumber)
+secondnumber = list(range(1,10))
+secondnumber.remove(5)
+print(secondnumber)
 #wait = input('Type something ')
 if arrayunits == 2:
-    for a1 in range(1,10):
-        for a2 in range(1,10):
+    for a1 in firstnumber:
+        secondnumber = list(range(1,10))
+        secondnumber.remove(a1)
+        for a2 in secondnumber:
             potential =([a1,a2])
             if sum(potential) == arraytotal:
                 print(potential)
-        #solutions = [arraytotal]
-if arrayunits == 3:
-    for a1 in range(1,10):
-        for a2 in range(1,10):
-            for a3 in range (1,10):
-                potential =([a1,a2,a3])
-                if sum(potential) == arraytotal:
-                    print(potential)
         #solutions = [arraytotal]
 else:
     solutions = 'Not a 2 length array'
