@@ -2,9 +2,8 @@
 
 #arraytotal = int(input('Total value of the array '))
 #arrayunits = int(input('Number of numbers within the array '))
-arraytotal = 13
-arrayunits = 3
-print('Hello')
+arraytotal = 17
+arrayunits = 2
 
 firstnumber = list(range(1,10))
 if arrayunits == 2:
@@ -30,7 +29,7 @@ elif arrayunits == 3:
         #solutions = [arraytotal]
 else:
     solutions = 'Not a 2 or 3 length array'
-#print(solutions)
+    print(solutions)
 
 #Improvements
 # 1 need to remove duplicates e.g. 6,9 and 9,6 - DONE
