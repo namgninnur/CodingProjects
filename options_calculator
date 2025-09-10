@@ -1,0 +1,16 @@
+#arraytotal = int(input('Total value of the array '))
+#arrayunits = int(input('Number of numbers within the array '))
+arraytotal = 40
+arrayunits = 8
+
+if arrayunits == 1:
+    solutions = [arraytotal]
+elif arrayunits == 8:
+    toremove = 45 - arraytotal
+    solutions = [1,2,3,4,5,6,7,8,9]
+    solutions.remove(toremove)
+elif arrayunits == 9:
+    solutions = [1,2,3,4,5,6,7,8,9]
+else:
+    solutions = 'No solutions'
+print(solutions)
