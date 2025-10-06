@@ -107,26 +107,42 @@ person = {
     'last_name': 'Noah',
     'age': 45,
     'country': 'South Africa',
-    'is_marred': True,
-    'skills': ['Comedy','TV','DJing','Python'],
+    'is_married': True,
+    'skills': ['Comedy','TV','DJing','Python','Basketball'],
     'address': {
         'street': 'Funny street',
         'zipcode': '99999'
     }
     }
+#3.1
 if person['skills'] is not 'None':
     len_person = len(person['skills'])
     print(len_person)
     if len_person % 2 == 0:
         print('Even')
-        print[skills]21
-        skills = list(person.values()'skills'))
-        middle_key = person[len_person/2:len_person/2+1]
-        print
-    elif len_person % 2 == 1:
-        middle_key = len_person/2 + 0.5
         print(person['skills'])
+        middle_key = person['skills'][int(len_person/2-1):int(len_person/2+1)]
+        print(middle_key)
+    elif len_person % 2 == 1:
+        print('Odd')
+        print(person['skills'])
+        middle_key = person['skills'][int(len_person/2 - 0.5)]
     else:
         print('Oops')
     print(middle_key)
+else:
+    print('Person has no skills')
 
+#3.2
+
+if person['skills'] is not None:
+    if 'Python' in person['skills']:
+        print('Python is there in the ',person['skills'].index('Python'),'position')
+    else:
+        print('no Python')
+else:
+    print('No skills')
+
+#3.4
+if person['is_married'] is True and person['country'] == 'South Africa':
+    print(person['first_name'],person['last_name'],'lives in',person['country'],'. He is married.')
