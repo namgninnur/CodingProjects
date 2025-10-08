@@ -190,3 +190,74 @@ def sum_of_evens(num):
     return total
 
 print(sum_of_evens(4))
+
+#Exercises - Level 2
+#1a
+def evens_and_odds(para):
+    num_evens = 0
+    num_odds = 0
+    for i in range(0,para+1,1): #+1 to account for Zero
+        #print(i)
+        if i % 2 == 0:
+            num_evens +=1
+            #print('a')
+        elif i % 2 == 1:
+            num_odds +=1
+            #print('b')
+    return num_evens, num_odds
+
+print(evens_and_odds(100))
+
+#1b
+def factorial(para):
+    sum = 1
+    for i in range(1,para+1,1):
+        sum = sum*i
+    return sum
+
+print(factorial(4))
+
+#2
+def is_empty(para = None):
+    if para is None:
+        print('The parameter is empty')
+    else:
+        print('The parameter is not empty')
+
+is_empty(['sdfsdfs','asfasf'])
+
+#3 Multiple functions which intake lists
+def calculate_mean(*paras):
+    total = 0
+    for i in paras:
+        #print(i)
+        total += i
+        #print(total)
+    #print(len(paras))
+    mean = total/len(paras)
+    #print(mean)
+    print ('The mean is ', mean)
+
+def calculate_median(*paras):
+    paras_list = []
+    for i in paras:
+        paras_list.append(i)
+    paras_list.sort()
+    if len(paras_list) % 2 == 1:
+        index = int(len(paras_list)/2-0.5)
+        median = paras_list[index]
+    elif len(paras_list) % 2 == 0:
+        index1 = int(len(paras_list)/2)
+        index2 = int(len(paras_list)/2-1)
+        median = (paras_list[index1]+paras_list[index2])/2
+    print ('The median is ', median)
+
+def calculate_mode(*paras):
+    arr = set(paras)
+    #print(arr)
+    mode = max(arr, key=paras.count)
+    print('The mode is ',mode)
+
+calculate_mean(4,7,2,2,2)
+calculate_median(4,7,2,2,2)
+calculate_mode(4,7,4,4,4,2,2,2)
