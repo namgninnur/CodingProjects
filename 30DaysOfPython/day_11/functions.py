@@ -237,6 +237,7 @@ def calculate_mean(*paras):
     mean = total/len(paras)
     #print(mean)
     print ('The mean is ', mean)
+    return mean
 
 def calculate_median(*paras):
     paras_list = []
@@ -251,13 +252,116 @@ def calculate_median(*paras):
         index2 = int(len(paras_list)/2-1)
         median = (paras_list[index1]+paras_list[index2])/2
     print ('The median is ', median)
+    return median
 
 def calculate_mode(*paras):
     arr = set(paras)
     #print(arr)
     mode = max(arr, key=paras.count)
     print('The mode is ',mode)
+    return mode
+
+def calculate_range(*paras):
+    max_range = max(paras)
+    min_range = min(paras)
+    paras_range = max_range - min_range
+    print('The range is ',paras_range)
+    return range
+
+def calculate_variance(*paras):
+    #print(paras)
+    mean = calculate_mean(*paras)
+    #print(mean)
+    length = len(paras)
+    #print(length)
+    i = 0
+    stds = [''] * length
+    stds_sq = stds
+    sum_sqs = 0
+    #print(stds)
+    while i < len(paras):
+        print(i)
+        #print(paras[i])
+        #print(mean)
+        stds[i] = paras[i]-mean
+        #print(stds[i])
+        stds_sq[i] = stds[i]**2
+        print(stds_sq[i])
+        sum_sqs += stds_sq[i]
+        i += 1
+    variance = sum_sqs/(length-1)
+    #print(stds)
+    print('The variance is ', variance)
+    return variance
+
+def calculate_std(*paras):
+    std = calculate_variance(*paras)**0.5
+    print(std)
+    print('The standard deviation is ', std)
+    return std
 
 calculate_mean(4,7,2,2,2)
 calculate_median(4,7,2,2,2)
 calculate_mode(4,7,4,4,4,2,2,2)
+calculate_range(4,7,2,2,2)
+calculate_variance(46,69,32,60,52,41)
+calculate_std(2,4,6,8)
+
+#Exercises Level 3
+#1 Is prime?
+def is_prime(para):
+    for i in range(2,para,1):
+        prime = True
+        #print(i)
+        if para % i == 0:
+            prime = False
+            break
+        else:
+            pass
+    if prime == True:
+        print(para,'is PRIME')
+    else:
+        print(para,'is sadly not prime. Please try again')
+
+print(is_prime(29))
+
+#2 Is unique
+def is_unique(*paras):
+    list_length = len(paras)
+    #print(list_length)
+    set_length = len(set(paras))
+    #print(set_length)
+    if list_length == set_length:
+        is_unique = True
+    else:
+        is_unique = False
+    return is_unique
+
+print(is_unique(1,2,3,5))
+
+#3 Same data type
+def same_data_type(*paras):
+    #typ = int()
+    length = len(paras)
+    same_type = True
+    for i in paras:
+        if i == paras[0]:
+            typ = type(paras[0])
+        elif type(i) == typ:
+            pass
+        else:
+            same_type = False
+            print('Not all same type')
+            break
+    if same_type == True:
+        print('All the same type')
+
+same_data_type(1,2,3)
+
+#4 Valid python variable
+def is_valid_python_var(para):
+    pass
+#Incomplete - unsure how to pass an invalid variable into the function to test it without generating a failure
+
+#5
+#Not completed
