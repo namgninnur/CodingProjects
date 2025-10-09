@@ -80,4 +80,79 @@ def new_user_id(para):
     return new_id
 print(new_user_id(6))
 
-#2 - To complete
+#2 - New user ID with length and number of IDs as inputs
+def user_id_gen_by_user(length,number):
+    new_id = [''] * number
+    lets_and_nums = string.ascii_letters + string.digits
+    for j in range(0,number,1):
+        for i in range(0,length,1):
+            new_id[j] += lets_and_nums[randint(0,len(lets_and_nums)-1)]
+        print(new_id[j])    
+    return new_id
+
+user_id_gen_by_user(8,3)
+
+#3 Write a function to generate an RGB color
+def rgb_color_gen():
+    col = [0]*3
+    for i in range(0,3,1):
+        #print(i)
+        col[i] = randint(0,255)
+    #print(tuple(col))
+    print('rgb'+ str(tuple(col)))
+
+rgb_color_gen()
+
+#Exercises - Level 2
+#1
+def list_of_hexa_colours(count):
+    hexadecimals = string.ascii_lowercase[0:6]+string.digits
+    array = ['#'] * count
+    #print(hexadecimals)
+    for j in range(0,count,1):
+        #print(j)
+        for i in range(0,6,1):
+            array[j] += str(hexadecimals[randint(0,16-1)])
+    return array
+
+print(list_of_hexa_colours(2))
+
+#2
+def list_of_rgb_colors(count):
+    for i in range(0,count,1):
+        rgb_color_gen()
+
+list_of_rgb_colors(3)
+
+#3
+print('Q3')
+def generate_colours(colour_type,num):
+    if colour_type == 'hexa':
+        print(list_of_hexa_colours(num))
+    elif colour_type == 'rgb':
+        list_of_rgb_colors(num)
+    else:
+        pass
+
+generate_colours('hexa',5)
+
+#Exercises - Level 3
+#1
+#2 Unique array - Needs work
+print('Q2')
+def unique_array():
+    array = ''
+    x = 0
+    for i in range(0,7,1):
+        isdup = True
+        while isdup is True:
+            new_num = str(randint(0,9))
+            if new_num in array:
+                print('duplicate')
+            else:
+                print('unique')
+            isdup is False
+        array += new_num
+    print(array)
+
+unique_array()
