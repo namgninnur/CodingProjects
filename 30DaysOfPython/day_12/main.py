@@ -137,22 +137,46 @@ def generate_colours(colour_type,num):
 generate_colours('hexa',5)
 
 #Exercises - Level 3
-#1
-#2 Unique array - Needs work
+#1 Shuffle list
+print('Q1')
+def shuffle_list(lst):
+    leng = len(lst)
+    print(lst[0])
+    print('Length is ',leng)
+    new_lst = ['ha']*leng
+    remaining_lst = lst
+    
+    for i in range(0,leng,1):
+        while new_lst[i] == 'ha':
+            #print(i)
+            counter = randint(0,leng-1)
+            #print(counter)
+            #print(lst[counter])
+            if lst[counter] in new_lst:
+                pass
+            else:
+                new_lst[i] = lst[counter]
+            #print(new_lst[i])
+    #print(new_lst)
+    #new_lst = lst
+    return new_lst
+
+print(shuffle_list(['a','b','c','d','e']))
+
+
+#2 Unique array
 print('Q2')
 def unique_array():
     array = ''
     x = 0
-    for i in range(0,7,1):
-        isdup = True
-        while isdup is True:
-            new_num = str(randint(0,9))
-            if new_num in array:
-                print('duplicate')
-            else:
-                print('unique')
-            isdup is False
-        array += new_num
+    while len(array) < 7:
+        new_num = str(randint(0,9))
+        if new_num in array:
+            #print('duplicate')
+            pass
+        else:
+            #print('unique')
+            array += new_num
     print(array)
 
 unique_array()
