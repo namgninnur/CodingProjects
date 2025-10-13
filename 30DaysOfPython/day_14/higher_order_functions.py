@@ -127,3 +127,112 @@ numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # Closures are functions which return an outcome from the inner function in the outr function
 # Decorators are functions that add new functionality to an existing object without modifying its structure
 
+#Q3a - Map
+
+numbs = [10,12,14,16,18]
+
+def sqrooted(x):
+    return x ** 0.5
+
+numbs_sqrooted = map(sqrooted,numbs)
+print(list(numbs_sqrooted))
+ 
+#Q3b - Filter
+q3data = ['This is the answer to Q3','ALPHA','ssshhh','abcdefghijklmopqrstuvwxyz']
+
+def q3function(para):
+    if len(para) > 7:
+        return True
+    return False
+
+long_names = filter(q3function,q3data)
+print(list(long_names))
+
+#Q3c - Reduce
+reducables = [1,2,3,4]
+
+
+def add_them(x,y):
+    return int(x)*int(y)
+
+total_num = reduce(add_them, reducables)
+print(total_num)
+
+#Q4-6
+print(countries)
+for x in countries:
+    print(x)
+
+for x in names:
+    print(x)
+
+for x in numbers:
+    print(x)
+
+#Exercises - Level 2
+#Q1
+def uppercase(para):
+    return para.upper()
+
+print(uppercase('hi'))
+for x in countries:
+    uppercountries = map(uppercase,countries)
+
+print(list(uppercountries))
+
+#Q2 - Squares
+#Op A
+def sq_the_nums(para):
+    return para ** 2
+
+for y in numbers:
+    sq_nums = map(sq_the_nums, numbers)
+
+print(list(sq_nums))
+#Op B
+sq_nums2 = map(lambda x : x ** 2, numbers)
+print(list(sq_nums2))
+
+#3 
+def make_name_upper(name):
+    return name.upper()
+
+for x in names:
+    upper_names =map(make_name_upper, names)
+print(list(upper_names))
+
+#4 - Filter
+def no_land(x):
+    if 'land' in x:
+        return False
+    else:
+        return True
+    
+for x in countries:
+    landless = filter(no_land,countries)
+
+print(list(landless))
+
+#5 - Filter 6 chars
+def no_six_chars(x):
+    if len(x) == 6:
+        return False
+    else:
+        return True
+
+for x in countries:
+    sixless = filter(no_six_chars,countries)
+
+print(list(sixless))
+
+#6
+def no_six_chars_or_more(x):
+    if len(x) >= 6:
+        return False
+    else:
+        return True
+
+for x in countries:
+    undersix = filter(no_six_chars_or_more,countries)
+
+print(list(undersix))
