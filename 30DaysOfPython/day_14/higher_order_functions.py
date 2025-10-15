@@ -550,7 +550,6 @@ for y in countries_dict2:
             print(z)
 
 print(countries_dict2)
-print(list(uppercountries))
 
 
 
