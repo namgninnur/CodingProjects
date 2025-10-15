@@ -3190,3 +3190,9 @@ countries_data = [
         "currency": "Botswana pula"
     }
 ]
+
+sorted_by_name = sorted(countries_data, key = lambda x:x["name"])
+sorted_by_capital = sorted(countries_data, key = lambda x:x["capital"])
+sorted_by_population = sorted(countries_data, key = lambda x:x["population"], reverse = True)
+
+print(sorted_by_population[0:10])
