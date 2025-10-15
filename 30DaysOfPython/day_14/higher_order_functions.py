@@ -236,3 +236,322 @@ for x in countries:
     undersix = filter(no_six_chars_or_more,countries)
 
 print(list(undersix))
+
+#7 No 'e'
+
+def no_starting_E(x):
+    if x[0] == 'E':
+        return False
+    else:
+        return True
+    
+for x in countries:
+    countries_with_no_starting_E = filter(no_starting_E,countries)
+
+print(list(countries_with_no_starting_E))
+
+#8 Combo list iterator
+
+def no_e_at_all(x):
+    if 'E' in x:
+        return False
+    else:
+        return True
+    
+for x in countries:
+    countries_w_no_e = filter(no_e_at_all,map(make_name_upper,countries))
+
+print(list(countries_w_no_e))
+
+#9 - Return only strings
+
+lst = [1,2,3.4,'aaaa','b','c',['a','a'],['b',2.3],[1,'a',4.2]]
+
+
+def get_string_lists(x):
+    if type(x) == str:
+        return True
+    else:
+        return False
+    
+for x in lst:
+    result = filter(get_string_lists,lst)
+
+print(list(result))
+
+#10
+def sum_all_numbers(x,y):
+    result = int(x)+int(y)
+    return result
+
+for x in numbers:
+    answer = reduce(sum_all_numbers,numbers)
+
+print(answer)
+
+#11
+
+last_country = countries.pop()
+
+def concatenate_all_countries(x,y):
+    conc = x +', '+ y
+    return conc
+
+for x in countries:
+    section = reduce(concatenate_all_countries,countries)
+
+print(section,'and',last_country,'are north European countries')
+
+#12 Categorise countries
+countries = [
+  'Afghanistan',
+  'Albania',
+  'Algeria',
+  'Andorra',
+  'Angola',
+  'Antigua and Barbuda',
+  'Argentina',
+  'Armenia',
+  'Australia',
+  'Austria',
+  'Azerbaijan',
+  'Bahamas',
+  'Bahrain',
+  'Bangladesh',
+  'Barbados',
+  'Belarus',
+  'Belgium',
+  'Belize',
+  'Benin',
+  'Bhutan',
+  'Bolivia',
+  'Bosnia and Herzegovina',
+  'Botswana',
+  'Brazil',
+  'Brunei',
+  'Bulgaria',
+  'Burkina Faso',
+  'Burundi',
+  'Cambodia',
+  'Cameroon',
+  'Canada',
+  'Cape Verde',
+  'Central African Republic',
+  'Chad',
+  'Chile',
+  'China',
+  'Colombia',
+  'Comoros',
+  'Congo (Brazzaville)',
+  'Congo',
+  'Costa Rica',
+  "Cote d'Ivoire",
+  'Croatia',
+  'Cuba',
+  'Cyprus',
+  'Czech Republic',
+  'Denmark',
+  'Djibouti',
+  'Dominica',
+  'Dominican Republic',
+  'East Timor (Timor Timur)',
+  'Ecuador',
+  'Egypt',
+  'El Salvador',
+  'Equatorial Guinea',
+  'Eritrea',
+  'Estonia',
+  'Ethiopia',
+  'Fiji',
+  'Finland',
+  'France',
+  'Gabon',
+  'Gambia, The',
+  'Georgia',
+  'Germany',
+  'Ghana',
+  'Greece',
+  'Grenada',
+  'Guatemala',
+  'Guinea',
+  'Guinea-Bissau',
+  'Guyana',
+  'Haiti',
+  'Honduras',
+  'Hungary',
+  'Iceland',
+  'India',
+  'Indonesia',
+  'Iran',
+  'Iraq',
+  'Ireland',
+  'Israel',
+  'Italy',
+  'Jamaica',
+  'Japan',
+  'Jordan',
+  'Kazakhstan',
+  'Kenya',
+  'Kiribati',
+  'Korea, North',
+  'Korea, South',
+  'Kuwait',
+  'Kyrgyzstan',
+  'Laos',
+  'Latvia',
+  'Lebanon',
+  'Lesotho',
+  'Liberia',
+  'Libya',
+  'Liechtenstein',
+  'Lithuania',
+  'Luxembourg',
+  'Macedonia',
+  'Madagascar',
+  'Malawi',
+  'Malaysia',
+  'Maldives',
+  'Mali',
+  'Malta',
+  'Marshall Islands',
+  'Mauritania',
+  'Mauritius',
+  'Mexico',
+  'Micronesia',
+  'Moldova',
+  'Monaco',
+  'Mongolia',
+  'Morocco',
+  'Mozambique',
+  'Myanmar',
+  'Namibia',
+  'Nauru',
+  'Nepal',
+  'Netherlands',
+  'New Zealand',
+  'Nicaragua',
+  'Niger',
+  'Nigeria',
+  'Norway',
+  'Oman',
+  'Pakistan',
+  'Palau',
+  'Panama',
+  'Papua New Guinea',
+  'Paraguay',
+  'Peru',
+  'Philippines',
+  'Poland',
+  'Portugal',
+  'Qatar',
+  'Romania',
+  'Russia',
+  'Rwanda',
+  'Saint Kitts and Nevis',
+  'Saint Lucia',
+  'Saint Vincent',
+  'Samoa',
+  'San Marino',
+  'Sao Tome and Principe',
+  'Saudi Arabia',
+  'Senegal',
+  'Serbia and Montenegro',
+  'Seychelles',
+  'Sierra Leone',
+  'Singapore',
+  'Slovakia',
+  'Slovenia',
+  'Solomon Islands',
+  'Somalia',
+  'South Africa',
+  'Spain',
+  'Sri Lanka',
+  'Sudan',
+  'Suriname',
+  'Swaziland',
+  'Sweden',
+  'Switzerland',
+  'Syria',
+  'Taiwan',
+  'Tajikistan',
+  'Tanzania',
+  'Thailand',
+  'Togo',
+  'Tonga',
+  'Trinidad and Tobago',
+  'Tunisia',
+  'Turkey',
+  'Turkmenistan',
+  'Tuvalu',
+  'Uganda',
+  'Ukraine',
+  'United Arab Emirates',
+  'United Kingdom',
+  'United States',
+  'Uruguay',
+  'Uzbekistan',
+  'Vanuatu',
+  'Vatican City',
+  'Venezuela',
+  'Vietnam',
+  'Yemen',
+  'Zambia',
+  'Zimbabwe',
+];
+
+def categorise_countries(x):
+    if 'a' in x or 'A' in x:
+        return False
+    else:
+        return True
+
+for x in countries:
+    ia_countries = filter(categorise_countries,countries)
+
+#print(list(ia_countries))
+
+#13 - Create dictionary of countries per starting letter
+
+# Set-up dictionary
+import string
+countries_dict = dict()
+x= 0
+      
+while x < len(str(string.ascii_uppercase)):
+    countries_dict[string.ascii_uppercase[x]] = 0
+    x = x+1
+
+#Iterate through each letter/country combo
+countries_dict1 = countries_dict
+for y in countries_dict1:
+    for z in countries:
+        if z[0] == y:
+            countries_dict1[y] += 1
+
+print(countries_dict1)
+
+#13b - If letter in country at all
+countries_dict2 = countries_dict
+
+def uppercase(para):
+    return para.upper()
+for x in countries:
+    uppercountries = map(uppercase,countries)
+
+upperlist = list(uppercountries)
+
+#upper_countries = list(uppercase_decorator(countries))
+for y in countries_dict2:
+    #print(y)
+    for z in upperlist:
+        #print(z)
+        if z.count(str(y)) > 0:
+            countries_dict2[y] += 1
+            print(z)
+
+print(countries_dict2)
+print(list(uppercountries))
+
+
+
+
