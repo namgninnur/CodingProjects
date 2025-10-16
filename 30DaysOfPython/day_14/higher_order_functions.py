@@ -517,16 +517,18 @@ import string
 countries_dict = dict()
 x= 0
       
-while x < len(str(string.ascii_uppercase)):
-    countries_dict[string.ascii_uppercase[x]] = 0
+while x < len(str(string.ascii_lowercase)):
+    countries_dict[string.ascii_lowercase[x]] = 0
     x = x+1
 
 #Iterate through each letter/country combo
 countries_dict1 = countries_dict
 for y in countries_dict1:
     for z in countries:
-        if z[0] == y:
+        if z[1] == y:
             countries_dict1[y] += 1
+        if z[1] == 'u':
+            print(z)
 
 print(countries_dict1)
 
@@ -547,9 +549,9 @@ for y in countries_dict2:
         #print(z)
         if z.count(str(y)) > 0:
             countries_dict2[y] += 1
-            print(z)
+            #print(z)
 
-print(countries_dict2)
+#print(countries_dict2)
 
 #14 First Ten Countries
 
@@ -557,7 +559,7 @@ def get_first_ten_countries(number,iterable):
     first_ten = iterable[0:(number-1)]
     return first_ten
 
-print(get_first_ten_countries(10,countries))
+#print(get_first_ten_countries(10,countries))
 
 #15 Last 10 Countries
 
@@ -565,7 +567,7 @@ def get_last_ten_countries(number,iterable):
     last_ten = iterable[(len(iterable)-11):(len(iterable)-1)]
     return last_ten
 
-print(get_last_ten_countries(10,countries))
+#print(get_last_ten_countries(10,countries))
 
 #Exercises - Level 3
 
@@ -3195,4 +3197,4 @@ sorted_by_name = sorted(countries_data, key = lambda x:x["name"])
 sorted_by_capital = sorted(countries_data, key = lambda x:x["capital"])
 sorted_by_population = sorted(countries_data, key = lambda x:x["population"], reverse = True)
 
-print(sorted_by_population[0:10])
+#print(sorted_by_population[0:10])
