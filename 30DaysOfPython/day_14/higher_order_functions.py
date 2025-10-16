@@ -3197,4 +3197,46 @@ sorted_by_name = sorted(countries_data, key = lambda x:x["name"])
 sorted_by_capital = sorted(countries_data, key = lambda x:x["capital"])
 sorted_by_population = sorted(countries_data, key = lambda x:x["population"], reverse = True)
 
-#print(sorted_by_population[0:10])
+print(sorted_by_population[0:10])
+
+#1 - Extra - Find top 10 languages and the countries they are spoken in
+
+language_lst = []
+def get_top_ten_languages(data):
+    for x in data:
+        if x['languages'] in language_lst:
+            print('Yay')
+        else:
+            language_lst.append(x['languages'])
+        #language_lst[(x['languages'])] = 0
+    return language_lst
+
+get_top_ten_languages(countries_data)
+print(language_lst)
+
+language_lst2 = []
+for xs in language_lst:
+    print(xs)
+    for x in xs:
+        language_lst2.append(x)
+language_lst2 = list(set(language_lst2))
+print(language_lst2)
+zeropop = [0]*len(language_lst2)
+d1 = zip(language_lst2,zeropop)
+d1 = (dict(d1))
+
+
+for x in countries_data:
+    for y in x['languages']:
+        #print(x['languages'])
+        print(d1.get(str(y)))
+        d1[y] += x['population']
+
+top_ten_languages = sorted(d1, key = lambda x:x, reverse = True)
+#print(d1)
+
+d2 = {k: v for k, v in sorted(d1.items(), key = lambda item: item[1], reverse = True)}
+#print(d2)
+
+first10pairs = {k:d2[k] for k in list(d2)[:10]}
+print(first10pairs)
