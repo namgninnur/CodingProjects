@@ -95,4 +95,25 @@ regex_pattern = r'[^A-Za-z ]+'  # ^ in set character means negation, not A to Z,
 
 #Exercises
 #Level 1
-paragraph = 'I love teaching. If you do not love teaching what else can you love. I love Python if you do not love something which can give you all the capabilities to develop an application what else can you love.
+paragraph = 'I love teaching. If you do not love teaching what else can you love. I love Python if you do not love something which can give you all the capabilities to develop an application what else can you love.'
+matches = re.sub('[^A-Za-z ]','',paragraph)
+print(matches)
+
+split = re.split(' ',matches)
+split = list(dict.fromkeys(split))
+print(split)
+counts = {value: 0 for value in split}
+print(counts)
+
+for x in counts:
+    #re.I ignores the case, otherwise it would need to be formatted like below
+    matches = re.findall(x, paragraph)
+    counts[x] = len(matches)
+
+final = dict(sorted(counts.items(), key = lambda item: item[1], reverse=True))
+print(final)
+
+#Q2
+txt = 'The position of some particles on the horizontal x-axis are -12, -4, -3 and -1 in the negative direction, 0 at origin, 4 and 8 in the positive direction. Extract these numbers from this whole text and find the distance between the two furthest particles.'
+numbersonly = re.sub('[a-zA-Z]','',txt)
+print(numbersonly)
