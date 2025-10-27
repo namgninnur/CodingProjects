@@ -101,9 +101,9 @@ print(matches)
 
 split = re.split(' ',matches)
 split = list(dict.fromkeys(split))
-print(split)
+#print(split)
 counts = {value: 0 for value in split}
-print(counts)
+#print(counts)
 
 for x in counts:
     #re.I ignores the case, otherwise it would need to be formatted like below
@@ -111,9 +111,62 @@ for x in counts:
     counts[x] = len(matches)
 
 final = dict(sorted(counts.items(), key = lambda item: item[1], reverse=True))
-print(final)
+#print(final)
 
 #Q2
 txt = 'The position of some particles on the horizontal x-axis are -12, -4, -3 and -1 in the negative direction, 0 at origin, 4 and 8 in the positive direction. Extract these numbers from this whole text and find the distance between the two furthest particles.'
-numbersonly = re.sub('[a-zA-Z]','',txt)
+numbersonly = re.sub('[a-zA-Z ,]','',txt)
 print(numbersonly)
+
+regex_pattern = r'[-|\s]\d{1,2}'
+matches = re.findall(regex_pattern,txt)
+print(matches)
+n=0
+while n < len(matches):
+    matches[n] = int(matches[n])
+    n=n+1
+minmatch = min(matches)
+maxmatch = max(matches)
+
+distance = maxmatch - minmatch
+print(distance)
+
+#Level 2
+
+def is_valid_variable(x):
+    try:
+        print(x())
+    except:
+        print ('False')
+    else:
+        print ('True')
+
+#is_valid_variable(aaa)
+
+#Skipped. - need to come back. Try identifying ineligible charachters
+
+#Level 3
+sentence = '''%I $am@% a %tea@cher%, &and& I lo%#ve %tea@ching%;. There $is nothing; &as& mo@re rewarding as educa@ting &and& @emp%o@wering peo@ple. ;I found tea@ching m%o@re interesting tha@n any other %jo@bs. %Do@es thi%s mo@tivate yo@u to be a tea@cher!?'''
+
+clean_text = re.sub('[%$@&;#!?.,]','',sentence)
+print(clean_text)
+split_text = re.split(' ',clean_text)
+print(split_text)
+split_text = list(dict.fromkeys(split_text))
+print(split_text)
+counts = {value: 0 for value in split_text}
+#print(counts)
+
+for x in counts:
+    #re.I ignores the case, otherwise it would need to be formatted like below
+    matches = re.findall(x, paragraph, re.I)
+    counts[x] = len(matches)
+
+final = dict(sorted(counts.items(), key = lambda item: item[1], reverse=True))
+
+from collections import Counter
+
+k = Counter(final)
+topthree = k.most_common(3)
+print(topthree)
+#print(most_frequent_words(cleaned_text)) # [(3, 'I'), (2, 'teaching'), (2, 'teacher')]
