@@ -1,0 +1,10 @@
+{
+  "name": "Tom",
+  "country": "America",
+  "city": "Los Angeles",
+  "skills": [
+    "flying",
+    "jumping",
+    "running"
+  ]
+}
