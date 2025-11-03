@@ -142,12 +142,108 @@ with open('./30DaysOfPython/day_19/csv_example.csv') as f:
 
 #1 count the number of lines and words in a text.
 
+import os 
 def counter (filename):
+    result = {"file": filename,"lines": 0, "words" : 0}
     filename = './data/'+str(filename)
-    with open(filename) as file:
-        lines = file.read().splitlines()
-        print(type(lines))
-        print(lines)
+    try:
+        f = open(filename)
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip(os.linesep)
+            result["lines"] +=1
+            result["words"] += len(line.split())
+    except Exception as e:
+        print(e)
+    finally:
+        return result
 
-counter()
+print(counter('obama_speech.txt'))
+print(counter('donald_speech.txt'))
+print(counter('michelle_obama_speech.txt'))
+print(counter('melina_trump_speech.txt'))
 
+#Q2 Create a function that finds the ten most spoken languages from a json input file
+
+def most_spoken_languages(filename,limit):
+    # Get the countries_data.json into a dictionary
+    import json
+    #filename = 'countries_data.json'
+    filename = './data/'+str(filename)
+    #print(filename)
+    with open(filename, 'r') as file:
+        country_dct = json.load(file)
+    #print(country_dct[0:2])
+
+    #Create a list of all the languages per country
+    language_lst = []
+    for x in country_dct:
+        if x['languages'] in language_lst:
+            #print('Yay')
+            pass
+        else:
+            language_lst.append(x['languages'])
+        #language_lst[(x['languages'])] = 0
+    #print(language_lst)
+
+    #Break open the second tier []
+    language_lst2 = []
+    for xs in language_lst:
+        #print(xs)
+        for x in xs:
+            language_lst2.append(x)
+    #print(language_lst2)
+
+    #Convert into a dictionary and count instances of each language
+    language_lst3 = list(set(language_lst2)) # getting rid of dupes
+    #print(language_lst3)
+    zerocount = [0]*len(language_lst3)
+    d1 = zip(language_lst3,zerocount)
+    d1 = (dict(d1))
+    #now we have a dict of languages each with 0 occurences
+
+    #count occurences for each language
+    for x in country_dct:
+        for y in x['languages']:
+            d1[y] += 1    
+
+    #Sort languages by # of countries spoken
+    d2 = {k: v for k, v in sorted(d1.items(), key = lambda item: item[1], reverse = True)}
+
+    #Retun top reslts until specified limit
+    first_x_pairs = {d2[k]:k for k in list(d2)[:int(limit)]}
+
+    return first_x_pairs
+
+print(most_spoken_languages('countries_data.json',10))
+
+#Q3 - Read the countries_data.json file and create a function that creates a list of ten most populated countries
+
+def most_populated_countries(filename,limit):
+    # Get the countries_data.json into a Python dictionary
+    import json
+    filename = './data/'+str(filename)
+    with open(filename, 'r') as file:
+        country_dct = json.load(file)
+
+    #Create a dictionary of all the countries and their pops
+    country_lst = []
+    pop_lst = []
+    for x in country_dct:
+        country_lst.append(x['name'])
+        pop_lst.append(x['population'])
+
+    d1 = zip(country_lst,pop_lst)
+    d1 = (dict(d1))
+
+    #Sort countries by population
+    d2 = {k: v for k, v in sorted(d1.items(), key = lambda item: item[1], reverse = True)}
+
+    #Retun top results until specified limit
+    first_x_countries = {k:d2[k] for k in list(d2)[:int(limit)]}
+
+    return first_x_countries
+
+print(most_populated_countries('countries_data.json',10))
+
+#Level 2 Exercises
