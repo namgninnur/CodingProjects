@@ -140,4 +140,14 @@ with open('./30DaysOfPython/day_19/csv_example.csv') as f:
 
 #Exercises - Day_19
 
-#1a)
+#1 count the number of lines and words in a text.
+
+def counter (filename):
+    filename = './data/'+str(filename)
+    with open(filename) as file:
+        lines = file.read().splitlines()
+        print(type(lines))
+        print(lines)
+
+counter()
+
