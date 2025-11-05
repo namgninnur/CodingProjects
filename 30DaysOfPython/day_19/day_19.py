@@ -252,9 +252,6 @@ print(most_populated_countries('countries_data.json',10))
 import re
 f = open('./data/email_exchanges_big.txt')
 txt = f.read() # read first 1000 chars
-#print(txt)
-#print(type(txt))
-#print(len(txt))
 txt2 = re.sub(' ','', txt,re.I)
 txt3 = re.sub(' ','',txt2,re.I)
 #print(txt3)
@@ -262,11 +259,52 @@ txt3 = re.sub(' ','',txt2,re.I)
 regex_pattern = r'[ *]?From:[ *].*' #looking for all the From: 's
 matches = re.findall(regex_pattern, txt3, re.I)
 print(matches)
+print(type(matches))
 
-matches_str = str(matches)
-print(matches_str)
-matches3 = re.sub('From:','',matches_str,re.I)
-print(matches3)
+new_matches = []
+for i in matches:
+    new_i = re.sub(' ?From: ','',i,re.I)
+    if new_i in new_matches:
+        pass
+    else:
+        new_matches.append(new_i)
+
+print(new_matches)
+print(len(new_matches))
+print(type(new_matches))
+
 f.close()
 
-#Need to remove the 3rd and following 'From: 's as well as repeated
+#Exercise 5 and 6
+
+#Plan
+#Import file, remove punctuation, split on spaces,
+def most_common_words(text,x):
+    import re
+    filename=str(text)
+    f = open(filename)
+    txt = f.read() # read first 1000 chars
+
+    txt2 = re.sub('[^A-Za-z ]','',txt)
+    txt3 = txt2.split(' ')
+    #print(txt3)
+
+    word_count = dict.fromkeys(txt3,0)
+    #print(word_count)
+
+    for i in txt3:
+        if i in word_count:
+            word_count[i] +=1
+        else:
+            pass
+    word_count = {k: v for k, v in sorted(word_count.items(), key = lambda item: item[1], reverse=True)[:x]}
+    print(filename,word_count)
+    return
+
+most_common_words('./data/obama_speech.txt',10)
+most_common_words('./data/donald_speech.txt',10)
+most_common_words('./data/michelle_obama_speech.txt',10)
+most_common_words('./data/melina_trump_speech.txt',10)
+
+#for each word (case insensitive), iterate and either add to dictionary if new, or increase count if existing
+#order descending based on count
