@@ -247,3 +247,26 @@ def most_populated_countries(filename,limit):
 print(most_populated_countries('countries_data.json',10))
 
 #Level 2 Exercises
+#Extract all incoming email address as a list from the email_Exchange_big.txt file
+
+import re
+f = open('./data/email_exchanges_big.txt')
+txt = f.read() # read first 1000 chars
+#print(txt)
+#print(type(txt))
+#print(len(txt))
+txt2 = re.sub(' ','', txt,re.I)
+txt3 = re.sub(' ','',txt2,re.I)
+#print(txt3)
+
+regex_pattern = r'[ *]?From:[ *].*' #looking for all the From: 's
+matches = re.findall(regex_pattern, txt3, re.I)
+print(matches)
+
+matches_str = str(matches)
+print(matches_str)
+matches3 = re.sub('From:','',matches_str,re.I)
+print(matches3)
+f.close()
+
+#Need to remove the 3rd and following 'From: 's as well as repeated
