@@ -292,13 +292,16 @@ def most_common_words(text,x):
     word_count = dict.fromkeys(txt3,0)
     #print(word_count)
 
+    #for each word (case insensitive), iterate and either add to dictionary if new, or increase count if existing
     for i in txt3:
         if i in word_count:
             word_count[i] +=1
         else:
             pass
+    #order descending based on count
     word_count = {k: v for k, v in sorted(word_count.items(), key = lambda item: item[1], reverse=True)[:x]}
     print(filename,word_count)
+    f.close()
     return
 
 most_common_words('./data/obama_speech.txt',10)
@@ -306,5 +309,43 @@ most_common_words('./data/donald_speech.txt',10)
 most_common_words('./data/michelle_obama_speech.txt',10)
 most_common_words('./data/melina_trump_speech.txt',10)
 
-#for each word (case insensitive), iterate and either add to dictionary if new, or increase count if existing
-#order descending based on count
+#7 Create a python application that checks similarity between two texts
+#Take two files or strings as parameters
+
+#functions to clean text - i.e. remove punctuation
+#function to remove common support words e.g. and, in etc
+#function to check similarity - % of words in text A that are in text B
+def similarity_checker(filename1,filename2):
+    #open two files
+    import re
+    filename1_str=str(filename1)
+    f1 = open(filename1_str)
+    #txt1 = f1.read(1000) # read first 1000 chars
+    txt1 = f1.read()
+
+    filename2_str=str(filename2)
+    f2 = open(filename2_str)
+    txt2 = f2.read()
+
+    #remove punctuation from both files
+    txt1_wordsonly = re.sub('[^A-Za-z ]','',txt1)
+    txt1_split = txt1_wordsonly.split(' ')
+    txt1_unique = list(dict.fromkeys(txt1_split,0))
+    
+
+    txt2_wordsonly = re.sub('[^A-Za-z ]','',txt2)
+    txt2_split = txt2_wordsonly.split(' ')
+    txt2_unique = list(dict.fromkeys(txt2_split,0))
+
+    #enhancement for future - remove common words
+    
+    count = 0
+    for i in txt1_unique:
+        if i in txt2_unique:
+            count += 1
+
+    similarity = count/len(txt1_split)
+    return similarity*100
+    #enhancement for future - format with 2dp and % sign
+
+print(similarity_checker('./data/michelle_obama_speech.txt','./data/melina_trump_speech.txt'))
