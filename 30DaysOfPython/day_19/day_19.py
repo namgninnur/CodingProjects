@@ -336,16 +336,90 @@ def similarity_checker(filename1,filename2):
     txt2_wordsonly = re.sub('[^A-Za-z ]','',txt2)
     txt2_split = txt2_wordsonly.split(' ')
     txt2_unique = list(dict.fromkeys(txt2_split,0))
-
-    #enhancement for future - remove common words
     
-    count = 0
+    #remove common words
+    #adding data folder topath
+    import sys
+    sys.path.insert(0,"./data")
+
+    from stop_words import stop_words
+    #print(stop_words)
+
+    #removing stop words from comparison lists
+    txt1_unique_clean = []
     for i in txt1_unique:
-        if i in txt2_unique:
+        if i in stop_words:
+            pass
+        else:
+            txt1_unique_clean.append(i)
+    
+    txt2_unique_clean = []
+    for i in txt2_unique:
+        if i in stop_words:
+            pass
+        else:
+            txt2_unique_clean.append(i)
+    
+    #counting common words
+    count = 0
+    for i in txt1_unique_clean:
+        if i in txt2_unique_clean:
             count += 1
 
-    similarity = count/len(txt1_split)
-    return similarity*100
-    #enhancement for future - format with 2dp and % sign
+    similarity = (count/len(txt1_unique_clean))*100
+    similarity_formatted = f"{similarity:.2f}"
+    return str('Similarity % is ')+str(similarity_formatted)+str('%')
 
 print(similarity_checker('./data/michelle_obama_speech.txt','./data/melina_trump_speech.txt'))
+print(similarity_checker('./data/obama_speech.txt','./data/donald_speech.txt'))
+
+#Exercise 8 - Find 10 most repeated words in romeo_and_juliet.txt
+most_common_words('./data/romeo_and_juliet.txt',10)
+
+#Exercise 9
+#9a - Count the number of lines containing python or Python
+#9b - Count the number of lines containing JavaScript, javascript or Javascript
+#9c - Count the number of lines containing Java and not JavaScript
+
+#9a
+p_count = 0
+with open('./data/hacker_news.csv') as f:
+    csv_reader = csv.reader(f, delimiter=',')
+    for row in csv_reader:
+        #print(str(row))
+        if str('Python') in str(row):
+            p_count += 1
+        elif str('python') in str(row):
+            p_count += 1
+        else:
+            pass
+print(p_count)
+
+#9b
+j_count = 0
+with open('./data/hacker_news.csv') as f:
+    csv_reader = csv.reader(f, delimiter=',')
+    for row in csv_reader:
+        #print(str(row))
+        if str('JavaScript') in str(row):
+            j_count += 1
+        elif str('javascript') in str(row):
+            j_count += 1
+        elif str('Javascript') in str(row):
+            j_count += 1
+        else:
+            pass
+print(j_count)
+
+#9c
+j2_count = 0
+with open('./data/hacker_news.csv') as f:
+    csv_reader = csv.reader(f, delimiter=',')
+    for row in csv_reader:
+        if str('Java') in str(row):
+            if str('JavaScript') in str(row):
+                pass
+            else:
+                j2_count += 1
+
+print(j2_count)
