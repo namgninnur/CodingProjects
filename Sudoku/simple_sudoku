@@ -1,0 +1,19 @@
+#Board Setup
+#4x4 Sudoku
+#[[?,?,?,4],[?,?,?,?],[2,?,?,3],[4,?,1,2]
+
+import numpy as np
+board = np.array([['x','x','x',4],['x','x','x','x'],[2,'x','x',3],[4,'x',1,2]])
+
+shape = board.shape
+print(shape[0])
+
+row1 = board[0,:]
+row2 = board[1,:]
+row3 = board[2,:]
+row4 = board[3,:]
+
+col1 = board[:,0]
+col2 = board[:,1]
+col3 = board[:,2]
+col4 = board[:,3]
