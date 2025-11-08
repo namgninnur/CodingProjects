@@ -2,18 +2,27 @@
 #4x4 Sudoku
 #[[?,?,?,4],[?,?,?,?],[2,?,?,3],[4,?,1,2]
 
-import numpy as np
-board = np.array([['x','x','x',4],['x','x','x','x'],[2,'x','x',3],[4,'x',1,2]])
+import pandas as pd
 
-shape = board.shape
-print(shape[0])
+data = {
+  "col1": [None,None,2,4],
+  "col2": [None,None,None,None],
+  "col3": [None,None,None,1],
+  "col4": [4,None,3,2]
+}
 
-row1 = board[0,:]
-row2 = board[1,:]
-row3 = board[2,:]
-row4 = board[3,:]
+#load data into a DataFrame object:
+df = pd.DataFrame(data)
 
-col1 = board[:,0]
-col2 = board[:,1]
-col3 = board[:,2]
-col4 = board[:,3]
+print(df)
+
+shape = df.shape
+
+#For each row/col, see if any have 3/4 cells filled, and thus the fourth cell can be filled and then loop
+
+#to reference an individual element in an array
+num = df.iloc[0,3]
+print(type(num))
+print(num)
+xx=num+7
+print(xx)
