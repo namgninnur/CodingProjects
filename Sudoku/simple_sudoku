@@ -8,6 +8,15 @@ import pandas as pd
 import math as math
 import numpy as np
 
+#Required functions
+def poss_str_to_poss_lst(poss_string):
+  import re
+  poss_lst = []
+  poss_string_split = poss_string.split(',')
+  for i in poss_string_split:
+    poss_lst.append(int(re.sub(r'[^0-9]', '', i)))
+  return poss_lst
+
 data = {
   "col1": [None,None,2,4],
   "col2": [None,None,None,None],
@@ -30,6 +39,37 @@ print(shape[1])
 row = df.iloc[:,3]
 col = df.iloc[1,:]
 element = df.iloc[2,2]
+
+#Create a base possibiilities dataframe - mutliple possibilities need to be stored as a string
+possibilities_df = df.astype(object)
+
+lst = list(range(1,shape[0]+1))
+for i in range(0,shape[0]):
+  for j in range(0,shape[1]):
+    if possibilities_df.iloc[i,j] == None or math.isnan(possibilities_df.iloc[i,j]) == True:
+      possibilities_df.iloc[i,j] = str(lst)
+print(possibilities_df)
+possibilities_df_orig = possibilities_df
+
+#For each element, rule out potential possibiltiies if that possibility is already in row
+for i in range(0,shape[0]):
+  for j in range(0,shape[1]):
+    if type(possibilities_df.iloc[i,j]) is str:
+      poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
+      for x in df.iloc[i,:]:
+        if x in poss_lst:
+          poss_lst.remove(x)
+      for y in df.iloc[:,j]:
+        if y in poss_lst:
+          poss_lst.remove(y)
+      if len(poss_lst) == 1:
+        possibilities_df.iloc[i,j] = poss_lst[0]
+      else:
+        possibilities_df.iloc[i,j] = str(poss_lst)
+
+print(possibilities_df)
+print('section done')
+
 
 #Completeness placeholder
 #Enhancement opportunity - extend to include box as a future array type
@@ -92,7 +132,7 @@ incomplete_cells_count_all(df)
 print(incomplete_cells_df)
 
 #Overall looper, puzzle loops until is_done=1
-is_done = 0
+is_done = 1
 count=0
 
 #os.system('clear')
@@ -151,5 +191,5 @@ while is_done == 0 and count <= 100:
     count +=1
 
 
-print(df)
+print(df.iloc[0,0])
 print(incomplete_cells_df)
