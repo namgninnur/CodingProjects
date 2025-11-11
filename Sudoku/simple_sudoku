@@ -65,7 +65,7 @@ def box_corner_col(box):
 #  "col9": [None,]
 #}
 
-data1 = {
+data_supereasy = {
   "col1": [None,4,None,None,7,9,None,3,None],
   "col2": [None,None,6,8,None,None,5,2,None],
   "col3": [3,2,None,4,None,None,7,None,8],
@@ -76,7 +76,7 @@ data1 = {
   "col8": [1,8,4,None,9,2,6,5,None,],
   "col9": [5,None,None,None,None,3,4,None,None]
 }
-data = {
+data_easy = {
   "col1": [None,None,8,None,6,None,None,None,None],
   "col2": [9,None,None,8,None,None,None,7,6],
   "col3": [None,6,5,3,None,None,9,None,None],
@@ -88,6 +88,31 @@ data = {
   "col9": [None,None,None,None,2,None,1,None,None]
 }
 
+data_med = {
+  "col1": [None,None,9,None,None,None,4,None,None],
+  "col2": [None,2,None,9,None,3,7,None,None],
+  "col3": [None,None,7,None,6,1,None,None,8],
+  "col4": [None,5,3,None,None,4,9,None,None],
+  "col5": [None,None,None,None,None,None,None,None,None],
+  "col6": [None,None,6,5,None,None,8,3,None],
+  "col7": [9,None,None,2,1,None,3,None,None],
+  "col8": [None,None,2,8,None,6,None,7,None],
+  "col9": [None,None,1,None,None,None,6,None,None]
+}
+
+data_hard = {
+  "col1": [4,5,None,2,None,None,None,None,None],
+  "col2": [None,None,None,None,None,None,6,2,None],
+  "col3": [None,None,2,None,1,7,None,3,None],
+  "col4": [None,None,8,None,3,None,7,None,None],
+  "col5": [None,None,7,None,None,1,4,None,None],
+  "col6": [2,6,None,None,None,None,None,None,9],
+  "col7": [None,3,None,None,5,8,2,None,None],
+  "col8": [None,None,4,3,None,None,None,None,8],
+  "col9": [None,None,None,1,None,None,None,None,3]
+}
+
+data = data_hard
 
 #load data into a DataFrame object:
 df = pd.DataFrame(data)
@@ -96,9 +121,9 @@ print(df)
 #Get shape of dataframe
 shape = df.shape
 #number of cols
-print(shape[0])
+#print(shape[0])
 #number of rows
-print(shape[1])
+#print(shape[1])
 
 #to reference an individual column, row, element in an array
 row = df.iloc[:,3]
@@ -117,23 +142,23 @@ for i in range(0,shape[0]):
       possibilities_df.iloc[i,j] = str(lst)
     else:
       possibilities_df.iloc[i,j] = int(possibilities_df.iloc[i,j])
-print(possibilities_df)
+#print(possibilities_df)
 possibilities_df_orig = possibilities_df
 
 #Overall looper, puzzle loops until is_done=1
 is_done = 0
 count=0
-count2=0
+solving_step=0
 
 #os.system('clear')
 
-while is_done == 0 and count <= 6:
-  if count == 6:
-    print('The puzzle has not been solved after 1000 loops')
+while is_done == 0 and count <= 1000:
+  if count == 1000:
+    print('The puzzle has not been solved after 1000 steps')
     count += 1
   elif NaNcount == 0: 
     is_done=1
-    print('The puzzle is done after',count,'loops')
+    print('The puzzle is done after',count,'steps')
   else:
     #For each element, rule out potential possibiltiies if that possibility is already in row/col
     for i in range(0,shape[0]):
@@ -141,104 +166,135 @@ while is_done == 0 and count <= 6:
         if type(possibilities_df.iloc[i,j]) is str:
           poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
           for x in possibilities_df.iloc[i,:]:
-            if x in poss_lst:
+            if type(x) is int and x in poss_lst:
               poss_lst.remove(x)
           for y in possibilities_df.iloc[:,j]:
-            if y in poss_lst:
+            if type(y) is int and y in poss_lst:
               poss_lst.remove(y)
           
           box = box_picker(i,j,shape[0])
+          b_row = box_corner_row(box)
+          b_col = box_corner_col(box)
           #iterate for three elements of each of three rows (i.e. the box)
-          for z in possibilities_df.iloc[box_corner_row(box):box_corner_row(box)+3,box_corner_col(box)]:
-            if i == 0 and j == 0:
-              print(possibilities_df.iloc[box_corner_row(box):box_corner_row(box)+3,box_corner_col(box):box_corner_col(box)+3])
-              print('z is',z)
+          for z in possibilities_df.iloc[b_row:b_row+3,b_col]:
             if type(z) is int and z in poss_lst:
               poss_lst.remove(z)
-          for z in possibilities_df.iloc[box_corner_row(box):box_corner_row(box)+3,box_corner_col(box)+1]:
+          for z in possibilities_df.iloc[b_row:b_row+3,b_col+1]:
             if type(z) is int and z in poss_lst:
               poss_lst.remove(z)
-          for z in possibilities_df.iloc[box_corner_row(box):box_corner_row(box)+3,box_corner_col(box)+2]:
+          for z in possibilities_df.iloc[b_row:b_row+3,b_col+2]:
             if type(z) is int and z in poss_lst:
               poss_lst.remove(z)
           
           if len(poss_lst) == 1:
-            if i == 0 and j == 0:
-              print('look here')
             possibilities_df.iloc[i,j] = int(poss_lst[0])  
             NaNcount -= 1
+            solving_step += 1
+            print('Solving Step #',solving_step)
+            print('Set element',i,',',j,'in box',box,'to',str(poss_lst[0]),'as it was the only potential value for that element')
             print(possibilities_df)
           else:
             possibilities_df.iloc[i,j] = str(poss_lst)
             if poss_lst ==[]:
-              print('big problemmm')
-                  
+              print('big problem of empty possibilities list')
+      count += 1            
       #input additional logic to solve puzzle
       #e.g. examine lines and rows for only cell in that row/col/box that can be specific number
     
     #Examine each row to see if there are any numbers which can only go in one location
-    for i in range(0,shape[0]):
-      k_count=0
-      for k in range(1,10):
-        for j in range(0,shape[1]):
-          if type(possibilities_df.iloc[i,j]) is str:
-            #print('i is',i,'k is',k,'j is',j)
-            #print(possibilities_df.iloc[i,j])
-            poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
-            if k in poss_lst:
-              k_count += 1
-        if k_count == 1:
+    skip=1 # Breaks the logic - need to debug
+    if skip==0:
+      for i in range(0,shape[0]):
+        k_count=0
+        for k in range(1,10):
           for j in range(0,shape[1]):
-            if type(possibilities_df.iloc[i,j]) is str:
+            #print('poss =',possibilities_df.iloc[i,j])
+            #print('poss type is',type(possibilities_df.iloc[i,j]))
+            if possibilities_df.iloc[i,j] == k:
+              k_count = 0
+            elif type(possibilities_df.iloc[i,j]) is str:
+              #print('i is',i,'k is',k,'j is',j)
+              #print(possibilities_df.iloc[i,j])
               poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
-              if k in poss_lst:
-                possibilities_df.iloc[i,j] = int(k)
-                NaNcount -= 1
-                print(possibilities_df)
-    
-    #Examine each col to see if there are any numbers which can only go in one location
-    for j in range(0,shape[1]):
-      k_count=0
-      for k in range(1,10):
-        for i in range(0,shape[0]):
-          if type(possibilities_df.iloc[i,j]) is str:
-            poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
-            if k in poss_lst:
-              k_count += 1
-        if k_count == 1:
-          for i in range(0,shape[0]):
-            if type(possibilities_df.iloc[i,j]) is str:
-              poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
-              if k in poss_lst:
-                possibilities_df.iloc[i,j] = int(k)
-                NaNcount -= 1
-                print(possibilities_df)      
-    #Examine each box to see if there are any numbers which can only go in one location
-    for box in range(1,shape[0]+1):
-    #box = 9
-      for k in list(range(1,10)):
-        k_count = 0
-        for bx in range(0,3):
-          for by in range(0,3):
-            #print('box is',box,'k is',k,'bx is',bx,'by is',by)
-            if type(possibilities_df.iloc[box_corner_row(box)+bx,box_corner_col(box)+by]) is str:
-              poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[box_corner_row(box)+bx,box_corner_col(box)+by])
-              #print(poss_lst)
               if k in poss_lst:
                 k_count += 1
-                #print('k_count is',k_count)
-        if k_count == 1:
+            
+          if k_count == 1:
+            for j in range(0,shape[1]):
+              if type(possibilities_df.iloc[i,j]) is str:
+                poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
+                if k in poss_lst:
+                  possibilities_df.iloc[i,j] = int(k)
+                  NaNcount -= 1
+                  solving_step += 1
+                  print('Solving Step #',solving_step)
+                  print(possibilities_df)
+      count += 1    
+    
+    #Examine each col to see if there are any numbers which can only go in one location
+    skip=1 #breaks the logic - need to debug
+    if skip==0:
+      for j in range(0,shape[1]):
+        for k in range(1,10):
+          k_count=0
+          k_skip=0
+          for i in range(0,shape[0]):
+            if possibilities_df.iloc[i,j] == int(k):
+                k_skip = 1
+                k_count = 0
+            elif type(possibilities_df.iloc[i,j]) is str and k_skip == 0:
+              poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
+              if k in poss_lst:
+                k_count += 1
+            
+          if k_count == 1:
+            for i in range(0,shape[0]):
+              if type(possibilities_df.iloc[i,j]) is str:
+                poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
+                if k in poss_lst:
+                  possibilities_df.iloc[i,j] = int(k)
+                  NaNcount -= 1
+                  solving_step +=1
+                  print('Solving Step #',solving_step)
+                  print(possibilities_df)      
+      count += 1
+    
+    #Examine each box to see if there are any numbers which can only go in one location
+    skip=0
+    if skip==0:
+      for box in range(1,shape[0]+1):
+      #box = 9
+        b_row = box_corner_row(box)
+        b_col = box_corner_col(box)
+        for k in list(range(1,10)):
+          k_count = 0
           for bx in range(0,3):
             for by in range(0,3):
-              if type(possibilities_df.iloc[box_corner_row(box)+bx,box_corner_col(box)+by]) is str:
-                poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[box_corner_row(box)+bx,box_corner_col(box)+by])
+              #if solving_step>30:
+                #print('box is',box,'k is',k,'bx is',bx,'by is',by)
+              if type(possibilities_df.iloc[b_row+bx,b_col+by]) is str:
+                poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[b_row+bx,b_col+by])
+                #print(poss_lst)
                 if k in poss_lst:
-                  if box == 1 and bx == 0 and by == 0:
-                    print(k)
-                  possibilities_df.iloc[box_corner_row(box)+bx,box_corner_col(box)+by] = int(k)
-                  NaNcount -= 1
-                  print(possibilities_df)
-    count +=1
+                  k_count += 1
+              elif possibilities_df.iloc[b_row+bx,b_col+by] == k:
+                k_count = 0
+          
+          if k_count == 1:
+            for bx in range(0,3):
+              for by in range(0,3):
+                #if solving_step>30:
+                  #print('box is',box,'k is',k,'bx is',bx,'by is',by)
+                if type(possibilities_df.iloc[b_row+bx,b_col+by]) is str:
+                  poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[b_row+bx,b_col+by])
+                  if k in poss_lst:
+                    possibilities_df.iloc[b_row+bx,b_col+by] = int(k)
+                    NaNcount -= 1
+                    solving_step += 1
+                    print('Solving Step #',solving_step)
+                    print('Set element',b_row+bx,',',b_col+by,'to',k,'as it was the only available spot in box',box,'for it')
+                    print(possibilities_df)
+      count +=1
     print(count)
 
 #print(possibilities_df_orig)
