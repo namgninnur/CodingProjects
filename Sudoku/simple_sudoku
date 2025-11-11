@@ -43,96 +43,20 @@ element = df.iloc[2,2]
 #Create a base possibiilities dataframe - mutliple possibilities need to be stored as a string
 possibilities_df = df.astype(object)
 
+NaNcount=0
 lst = list(range(1,shape[0]+1))
 for i in range(0,shape[0]):
   for j in range(0,shape[1]):
     if possibilities_df.iloc[i,j] == None or math.isnan(possibilities_df.iloc[i,j]) == True:
+      NaNcount += 1
       possibilities_df.iloc[i,j] = str(lst)
+    else:
+      possibilities_df.iloc[i,j] = int(possibilities_df.iloc[i,j])
 print(possibilities_df)
 possibilities_df_orig = possibilities_df
 
-#For each element, rule out potential possibiltiies if that possibility is already in row
-for i in range(0,shape[0]):
-  for j in range(0,shape[1]):
-    if type(possibilities_df.iloc[i,j]) is str:
-      poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
-      for x in df.iloc[i,:]:
-        if x in poss_lst:
-          poss_lst.remove(x)
-      for y in df.iloc[:,j]:
-        if y in poss_lst:
-          poss_lst.remove(y)
-      if len(poss_lst) == 1:
-        possibilities_df.iloc[i,j] = poss_lst[0]
-      else:
-        possibilities_df.iloc[i,j] = str(poss_lst)
-
-print(possibilities_df)
-print('section done')
-
-
-#Completeness placeholder
-#Enhancement opportunity - extend to include box as a future array type
-completed = pd.DataFrame(np.zeros((shape[0],2),int))
-#Method to update element value
-completed.iloc[0,0]=0
-
-#Check to see if a row/col is complete and thus can be skipped for future iterations.
-#Enhancement opportunity - Can be extended in future to a 3x3 square as array_type=3
-def check_array_complete(array_num,array_type): #array_type(col=0, row =1)
-  try:
-    if array_type==0:
-      array_sum = sum(df.iloc[array_num-1,:])
-      completed.iloc[array_num-1,0]=1
-      print('col',array_num,'is complete')
-    elif array_type==1:
-      array_sum = sum(df.iloc[:,array_num-1])
-      completed.iloc[array_num-1,1]=1
-      print('row',array_num,'is complete')
-  except TypeError:
-    print('The array is incomplete')
-  
-print(check_array_complete(4,1))
-print(completed)
-
-#Incomplete cells counter - for each array - see how many incomplete cells there are left
-#Enhancement opportunity - extend to include box as a future array type
-incomplete_cells_df = pd.DataFrame(np.zeros((shape[0],2),int))
-def incomplete_cells_count(array_num,array_type): #for individual array
-  #reset existing value to zero
-  incomplete_cells_df.iloc[array_num-1,array_type] = 0
-  if array_type == 0:
-    for i in df.iloc[array_num-1,:]:
-      if i == None:
-        incomplete_cells_df.iloc[array_num-1,array_type] += 1
-      elif math.isnan(i) == True:
-        incomplete_cells_df.iloc[array_num-1,array_type] += 1  
-  elif array_type == 1:
-    for i in df.iloc[:,array_num-1]:
-      if i == None:
-        incomplete_cells_df.iloc[array_num-1,array_type] += 1
-      elif math.isnan(i) == True:
-        incomplete_cells_df.iloc[array_num-1,array_type] += 1
-  return incomplete_cells_df
-
-def incomplete_cells_count_all(df_input):
-  for col in range(0,shape[0]):
-    incomplete_cells_count(col,0)
-  for row in range(0,shape[1]):
-    incomplete_cells_count(row,1)
-    print(incomplete_cells_df)
-
-#os.system('clear')
-print(df)
-print(incomplete_cells_count(3,1))
-print(incomplete_cells_df)
-
-incomplete_cells_count_all(df)
-
-print(incomplete_cells_df)
-
 #Overall looper, puzzle loops until is_done=1
-is_done = 1
+is_done = 0
 count=0
 
 #os.system('clear')
@@ -141,55 +65,30 @@ while is_done == 0 and count <= 100:
   if count == 100:
     print('The puzzle has not been solved after 1000 loops')
     count += 1
-  elif sum(completed)/(shape[0]*2) == 1:
+  elif NaNcount == 0: 
     is_done=1
-    print('The puzzle is done')
+    print('The puzzle is done after',count,'loops')
   else:
     #Iterate across all cols
-    for y in range(0,shape[1]):
-      print(y)
-      #if there is only 1 incomplete cell in an array, find the missing cell location, what its value should be and fill it in
-      if incomplete_cells_df.iloc[y,1] == 1:
-        #list of all possible nums
-        remaining_nums = list(range(1,shape[0]+1))
-        #this removes any numbers that are already known - hopeully leaving only 1
-        for i in df.iloc[:,y]:
-          if i in remaining_nums:
-            remaining_nums.remove(i)          
-        #this finds the None value and replaces it with remaining num
-        print(remaining_nums)
-        row = 0
-        for j in df.iloc[:,y]:
-          if j == None or math.isnan(j) == True:
-            print(j)
-            print(y)
-            df.iloc[row,y] = remaining_nums[0]
-          row += 1
-    
-    #iterate across all rows
-    for x in range(0,shape[0]):
-      print(x)
-      #if there is only 1 incomplete cell in an array, find the missing cell location, what its value should be and fill it in
-      if incomplete_cells_df.iloc[x,0] == 1:
-        #list of all possible nums
-        remaining_nums = list(range(1,shape[0]+1))
-        #this removes any numbers that are already known - hopeully leaving only 1
-        for i in df.iloc[x,:]:
-          if i in remaining_nums:
-            remaining_nums.remove(i)          
-        #this finds the None value and replaces it with remaining num
-        print(remaining_nums)
-        col = 0
-        for j in df.iloc[x,:]:
-          if j == None or math.isnan(j) == True:
-            print(j)
-            print(y)
-            df.iloc[x,col] = remaining_nums[0]
-          col += 1
+    #For each element, rule out potential possibiltiies if that possibility is already in row
+    for i in range(0,shape[0]):
+      for j in range(0,shape[1]):
+        if type(possibilities_df.iloc[i,j]) is str:
+          poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
+          for x in possibilities_df.iloc[i,:]:
+            if x in poss_lst:
+              poss_lst.remove(x)
+          for y in possibilities_df.iloc[:,j]:
+            if y in poss_lst:
+              poss_lst.remove(y)
+          if len(poss_lst) == 1:
+            possibilities_df.iloc[i,j] = int(poss_lst[0])
+            NaNcount -= 1
+          else:
+            possibilities_df.iloc[i,j] = str(poss_lst)    
     #input additional logic to solve puzzle
-    incomplete_cells_count_all(df)
+    #incomplete_cells_count_all(df)
     count +=1
 
-
-print(df.iloc[0,0])
-print(incomplete_cells_df)
+print(possibilities_df_orig)
+#print(possibilities_df)
