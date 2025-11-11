@@ -17,13 +17,51 @@ def poss_str_to_poss_lst(poss_string):
     poss_lst.append(int(re.sub(r'[^0-9]', '', i)))
   return poss_lst
 
+def box_picker(i,j,dim):
+  if dim == 9:
+    if i <=2:
+      box = 0
+    elif i > 2 and i <= 6:
+      box = 1
+    elif i > 6 and i <= 10:
+      box = 2
+    if j <=2:
+      box += 1
+    elif j > 2 and j <= 6:
+      box += 4
+    elif j > 6 and j <= 10:
+      box += 7
+  return box
+
+def box_corner_row(box):
+  if box <=3:
+    box_corner_row = 0
+  elif box >3 and box <=6:
+    box_corner_row = 3
+  elif box >6 and box <=9:
+    box_corner_row = 6
+  return box_corner_row
+
+def box_corner_col(box):
+  if box % 3 == 1:
+    box_corner_col = 0
+  elif box % 3 == 2:
+    box_corner_col = 3
+  elif box % 3 == 0:
+    box_corner_col = 6
+  return box_corner_col
+
+
 data = {
-  "col1": [None,None,None,None,None,None],
-  "col2": [3,None,None,1,6,None],
-  "col3": [None,5,None,None,4,1],
-  "col4": [4,6,1,3,None,None],
-  "col5": [None,None,None,None,3,4],
-  "col6": [None,3,None,5,1,6]
+  "col1": [None,4,None,None,7,9,None,3,None],
+  "col2": [None,None,6,8,None,None,5,2,None],
+  "col3": [3,2,None,4,None,None,7,None,8],
+  "col4": [7,None,None,None,8,None,3,None,1],
+  "col5": [None,None,9,None,2,None,None,4,None],
+  "col6": [None,None,8,6,1,5,None,None,9],
+  "col7": [None,6,None,None,None,None,9,1,7],
+  "col8": [1,8,4,None,9,2,6,5,None,],
+  "col9": [5,None,None,None,None,3,4,None,None]
 }
 
 #load data into a DataFrame object:
@@ -63,8 +101,8 @@ count=0
 
 #os.system('clear')
 
-while is_done == 0 and count <= 100:
-  if count == 100:
+while is_done == 0 and count <= 1000:
+  if count == 1000:
     print('The puzzle has not been solved after 1000 loops')
     count += 1
   elif NaNcount == 0: 
@@ -82,14 +120,18 @@ while is_done == 0 and count <= 100:
           for y in possibilities_df.iloc[:,j]:
             if y in poss_lst:
               poss_lst.remove(y)
+          box = box_picker(i,j,shape[0])
+          for z in possibilities_df.iloc[box_corner_row(box):box_corner_row(box)+2,box_corner_col(box):box_corner_col(box)+2]:
+            if z in poss_lst:
+              poss_lst.remove(z)
           if len(poss_lst) == 1:
             possibilities_df.iloc[i,j] = int(poss_lst[0])
             NaNcount -= 1
           else:
             possibilities_df.iloc[i,j] = str(poss_lst)    
-    #input additional logic to solve puzzle
-    #rule out if already in box
-    #examine lines and rows for only cell in that row/col/box that can be specific number
+      #input additional logic to solve puzzle
+      #e.g. rule out if already in box
+      #e.g. examine lines and rows for only cell in that row/col/box that can be specific number
     count +=1
 
 print(possibilities_df_orig)
