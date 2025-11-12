@@ -51,6 +51,33 @@ def box_corner_col(box):
     box_corner_col = 6
   return box_corner_col
 
+def quality_checker(df):
+  problem = 0
+  for i in range(0,shape[0]):
+    in_array = []
+    for j in range(0,shape[0]):
+      if type(df.iloc[i,j]) is int:
+        if df.iloc[i,j] not in in_array:
+          in_array.append(df.iloc[i,j])
+        else:
+          print('Critical problem with implemented logic - duplicate ',df.iloc[i,j],'in row',i)
+          problem = 1
+  for j in range(0,shape[0]):
+    in_array = []
+    for i in range(0,shape[0]):
+      if type(df.iloc[i,j]) is int:
+        if df.iloc[i,j] not in in_array:
+          in_array.append(df.iloc[i,j])
+        else:
+          print('Critical problem with implemented logic - duplicate ',df.iloc[i,j],'in col',j)
+          problem = 1
+  return problem
+  
+  
+      
+
+
+
 
 #Data input template
 #data = {
@@ -186,6 +213,7 @@ while is_done == 0 and count <= 1000:
             if type(z) is int and z in poss_lst:
               poss_lst.remove(z)
           
+          #If there is only one element in poss_lst, then this has to be the answer
           if len(poss_lst) == 1:
             possibilities_df.iloc[i,j] = int(poss_lst[0])  
             NaNcount -= 1
@@ -193,33 +221,33 @@ while is_done == 0 and count <= 1000:
             print('Solving Step #',solving_step)
             print('Set element',i,',',j,'in box',box,'to',str(poss_lst[0]),'as it was the only potential value for that element')
             print(possibilities_df)
+            if quality_checker(possibilities_df) == 1:
+              print('ARRGH')
           else:
             possibilities_df.iloc[i,j] = str(poss_lst)
             if poss_lst ==[]:
               print('big problem of empty possibilities list')
       count += 1            
       #input additional logic to solve puzzle
-      #e.g. examine lines and rows for only cell in that row/col/box that can be specific number
+      #e.g. existing tuples and higher level logic
     
     #Examine each row to see if there are any numbers which can only go in one location
-    skip=1 # Breaks the logic - need to debug
+    skip=0 #Kill-switch for this section
     if skip==0:
       for i in range(0,shape[0]):
-        k_count=0
         for k in range(1,10):
+          k_count=0
+          k_skip=0
           for j in range(0,shape[1]):
-            #print('poss =',possibilities_df.iloc[i,j])
-            #print('poss type is',type(possibilities_df.iloc[i,j]))
             if possibilities_df.iloc[i,j] == k:
+              k_skip = 1 #If k is already present as an integer, skip all future steps for this k
               k_count = 0
-            elif type(possibilities_df.iloc[i,j]) is str:
-              #print('i is',i,'k is',k,'j is',j)
-              #print(possibilities_df.iloc[i,j])
+            elif type(possibilities_df.iloc[i,j]) is str and k_skip == 0:
               poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
               if k in poss_lst:
                 k_count += 1
             
-          if k_count == 1:
+          if k_count == 1 and k_skip == 0:
             for j in range(0,shape[1]):
               if type(possibilities_df.iloc[i,j]) is str:
                 poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
@@ -232,7 +260,7 @@ while is_done == 0 and count <= 1000:
       count += 1    
     
     #Examine each col to see if there are any numbers which can only go in one location
-    skip=1 #breaks the logic - need to debug
+    skip=0 #Kill-switch for this section
     if skip==0:
       for j in range(0,shape[1]):
         for k in range(1,10):
@@ -240,14 +268,14 @@ while is_done == 0 and count <= 1000:
           k_skip=0
           for i in range(0,shape[0]):
             if possibilities_df.iloc[i,j] == int(k):
-                k_skip = 1
+                k_skip = 1 #If k is already present as an integer, skip all future steps for this k
                 k_count = 0
             elif type(possibilities_df.iloc[i,j]) is str and k_skip == 0:
               poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
               if k in poss_lst:
                 k_count += 1
             
-          if k_count == 1:
+          if k_count == 1 and k_skip == 0:
             for i in range(0,shape[0]):
               if type(possibilities_df.iloc[i,j]) is str:
                 poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[i,j])
@@ -260,7 +288,7 @@ while is_done == 0 and count <= 1000:
       count += 1
     
     #Examine each box to see if there are any numbers which can only go in one location
-    skip=0
+    skip=0 #Kill-switch for this section
     if skip==0:
       for box in range(1,shape[0]+1):
       #box = 9
@@ -268,23 +296,22 @@ while is_done == 0 and count <= 1000:
         b_col = box_corner_col(box)
         for k in list(range(1,10)):
           k_count = 0
+          k_skip = 0 
           for bx in range(0,3):
             for by in range(0,3):
-              #if solving_step>30:
-                #print('box is',box,'k is',k,'bx is',bx,'by is',by)
-              if type(possibilities_df.iloc[b_row+bx,b_col+by]) is str:
+              if possibilities_df.iloc[b_row+bx,b_col+by] == int(k):
+                k_skip = 1 #If k is already present as an integer, skip all future steps for this k
+                k_count = 0
+              if type(possibilities_df.iloc[b_row+bx,b_col+by]) is str and k_skip == 0:
                 poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[b_row+bx,b_col+by])
-                #print(poss_lst)
                 if k in poss_lst:
                   k_count += 1
               elif possibilities_df.iloc[b_row+bx,b_col+by] == k:
                 k_count = 0
           
-          if k_count == 1:
+          if k_count == 1 and k_skip == 0:
             for bx in range(0,3):
               for by in range(0,3):
-                #if solving_step>30:
-                  #print('box is',box,'k is',k,'bx is',bx,'by is',by)
                 if type(possibilities_df.iloc[b_row+bx,b_col+by]) is str:
                   poss_lst = poss_str_to_poss_lst(possibilities_df.iloc[b_row+bx,b_col+by])
                   if k in poss_lst:
@@ -297,5 +324,4 @@ while is_done == 0 and count <= 1000:
       count +=1
     print(count)
 
-#print(possibilities_df_orig)
 print(possibilities_df)
