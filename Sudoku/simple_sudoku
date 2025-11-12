@@ -179,10 +179,13 @@ solving_step=0
 
 #os.system('clear')
 
-while is_done == 0 and count <= 1000:
-  if count == 1000:
-    print('The puzzle has not been solved after 1000 steps')
+while is_done == 0:
+  if count >= 500:
+    print('The puzzle has not been solved after 500+ steps')
     count += 1
+    print('Final state after', count, 'steps')
+    print(possibilities_df)
+    is_done = 1
   elif NaNcount == 0: 
     is_done=1
     print('The puzzle is done after',count,'steps')
@@ -322,6 +325,9 @@ while is_done == 0 and count <= 1000:
                     print('Set element',b_row+bx,',',b_col+by,'to',k,'as it was the only available spot in box',box,'for it')
                     print(possibilities_df)
       count +=1
-    print(count)
+    
+    # Logic to look for tuples
+    #logic to look for X-pairs
+    #print(count)
 
-print(possibilities_df)
+#print(possibilities_df)
